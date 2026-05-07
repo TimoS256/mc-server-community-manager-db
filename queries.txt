@@ -1,0 +1,42 @@
+ -- Example Queries
+ 
+ -1. Players Overview
+ SELECT Username, Known_for FROM Players;
+ 
+ -2. All factions and who made them
+ SELEFT f.name AS Faction, p.Username AS Owner
+ FROM Factions f
+ JOIN Players p ON f.Owner = p.id
+ 
+ -3. All Faction Members
+ SELECT f.Name AS Faction, p.Username AS Player
+ FROM Faction_Memberships fm
+ JOIN Players p ON fm.Player_id = p.id
+ JOIN Factions f ON fm.Faction_id = f.id
+ ORDER BY f.name;
+ 
+ -4. Member count per faction
+ SELECT f.Name, COUNT(fm.id) AS members
+ FROM Factions f
+ LEFT JOIN Faction_Memberships fm ON f.id = fm.Faction_id
+ GROUP BY f.id, f.Name
+ ORDER BY members DESC;
+ 
+ -5. All shops and who runs them
+ SELECT s.Name AS Shop, s.product, p.Username AS Owner
+ FROM Shops s
+ LEFT JOIN Players p ON s.Owner = p.id;
+
+ -6. All bases and who owns them (with factions)
+ SELECT b.Name AS Base, p.Username AS Owner, f.Name AS Faction
+ FROM Bases b
+ LEFT JOIN Players p ON b.Owner = p.id
+ LEFT JOIN Factions f ON b.Faction = f.id;
+ 
+ -7. Players who don't have a faction
+ SELECT p.Username
+ FROM Players p
+ LEFT JOIN Faction_Memberships fm ON p.id = fm.Player_id
+ WHERE fm.id IS NULL;
+
+
